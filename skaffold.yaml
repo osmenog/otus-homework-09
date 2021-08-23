@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta21
+kind: Config
+metadata:
+  name: otus-homework-09
+build:
+  tagPolicy:
+    gitCommit: {}
+  artifacts:
+  - image: osmenogg/otus-homework-09
+    custom:
+      buildCommand: ./build.sh
+
+deploy:
+  helm:
+    releases:
+      - name: otus-hw-09
+        chartPath: ./k8s/user_service
+        namespace: otus
+        recreatePods: true
+        artifactOverrides:
+          image: osmenogg/otus-homework-09
+        imageStrategy:
+          helm: {}
