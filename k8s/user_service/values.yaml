@@ -42,16 +42,15 @@ service:
 
 ingress:
   enabled: true
+  className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: arch.homework
       paths:
-      - path: /
-        backend:
-          serviceName: arch.homework
-          servicePort: 80
+        - path: /
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -91,10 +90,16 @@ postgresql:
     tag: "10.6"
   postgresqlDataDir: "/data/pgdata"
   persistence:
-    mountPath: "/data/"
+    mountPath: "/data"
   postgresqlUsername: "user_service"
   postgresqlPassword: "VYAd5jnQNewSwdB"
   postgresqlDatabase: "user_service_db"
+
+  volumePermissions:
+    enabled: true
+    image:
+      repository: bitnami/minideb
+      tag: "buster"
 
 django:
   debug: true
