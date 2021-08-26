@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
 
@@ -8,7 +9,8 @@ router = routers.DefaultRouter()
 router.register('user', UserViewSet)
 
 urlpatterns = [
-    path('api/v1/', include(router.urls)),
     path('', GreetingsView.as_view()),
-    path('health', HealthCheckView.as_view())
+    url('', include('django_prometheus.urls')),
+    path('api/v1/', include(router.urls)),
+    path('health', HealthCheckView.as_view()),
 ]

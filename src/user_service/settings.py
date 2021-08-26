@@ -40,10 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
+    'django_prometheus',
+    'user_service'
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware'
 ]
 
 ROOT_URLCONF = 'user_service.urls'
@@ -79,12 +83,15 @@ WSGI_APPLICATION = 'user_service.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django_prometheus.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'postgres',
-        'PORT': 5432
+        'PORT': 5432,
+        'OPTIONS': {
+            'connect_timeout': 5
+        }
     }
 }
 
@@ -152,3 +159,5 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     )
 }
+
+AUTH_USER_MODEL = 'user_service.MyUser'

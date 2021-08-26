@@ -1,9 +1,11 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from user_service.serializers import UserSerializer
+
+User = get_user_model()
 
 
 class UserViewSet(ModelViewSet):
@@ -18,4 +20,10 @@ class HealthCheckView(APIView):
 
 class GreetingsView(APIView):
     def get(self, request):
-        return Response({'greetings': 'user', 'headers': dict(request.headers)})
+        x = request.headers.get('X-Real-Ip')
+        u = User.objects.filter(real_ip=x)
+        if x and u.count():
+            greetings = u.get().username
+        else:
+            greetings = 'Anonymous'
+        return Response(f'Hello, {greetings}. Your IP: {x}')
