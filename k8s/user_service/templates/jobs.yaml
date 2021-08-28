@@ -31,4 +31,4 @@ spec:
           - name: DJANGO_SETTINGS_MODULE
             value: "user_service.settings"
       restartPolicy: Never
-  backoffLimit: 1
+  backoffLimit: 3

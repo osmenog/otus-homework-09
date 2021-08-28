@@ -15,3 +15,5 @@ newman run otus-06.postman_collection.json
 
 
 while 1; do ab -n 50 -c 5 http://arch.homework/ ; sleep 3; done
+
+while 1; do curl http://arch.homework/handle500 ; sleep 10; done

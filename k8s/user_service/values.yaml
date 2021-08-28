@@ -95,11 +95,24 @@ postgresql:
   postgresqlPassword: "VYAd5jnQNewSwdB"
   postgresqlDatabase: "user_service_db"
 
+  # Данная настройка нужна для того, чтобы СУБД могла корректно инициализироваться.
+  # Обычно для этого используется специальный образ bitnami/bitnami-shell, но он, к сожалению, не работает под ARM64.
   volumePermissions:
     enabled: true
     image:
       repository: bitnami/minideb
       tag: "buster"
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+    image:
+      registry: registry.gitlab.com
+      repository: osmenog/my-home-postgres/arm64/postgres-exporter
+      tag: 0.10.0-debian-10-r27
+      pullSecrets:
+        - registry-credentials
 
 django:
   debug: true
